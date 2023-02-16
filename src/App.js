@@ -1,12 +1,16 @@
 import './input.css'
-import JSONDATA from './MOCK_DATA.json'
 import { useState } from 'react'
+import { useSelector } from 'react-redux';
+
+import JSONDATA from './MOCK_DATA.json'
 
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
+import ThemeColor from './component/ThemeColor';
+
 
 function App() {
-
+  const theme = useSelector((state) => state.theme.value)
   const [searchTerm, setSearchTerm] = useState('');
   return (
     <div className='flex justify-center align-center'>
@@ -17,10 +21,12 @@ function App() {
             maxWidth: '100%',
           }}
         >
-          <TextField onChange={event => { 
-            setSearchTerm(event.target.value) }}
+          <TextField onChange={event => {
+            setSearchTerm(event.target.value)
+          }}
             fullWidth label="Search..."
             id="fullWidth" />
+          <ThemeColor />
           {JSONDATA.filter((val) => {
             if (searchTerm == '') {
               return val
@@ -30,14 +36,12 @@ function App() {
           }).map((val, key) => {
             return (
               <div key={key}>
-                <p className='m-2 text-xl'>{val.first_name}</p>
-
+                <p style={{ color: theme }} className='m-2 text-xl'>{val.first_name}</p>
               </div>
             )
           })}
         </Box>
       </div>
-
     </div>
   );
 }
